@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sufra AI — Saudi Food AI Social Media Manager</title>
+  <meta
+    name="description"
+    content="Sufra AI is an Android Jetpack Compose social media manager and Google Maps AI review intelligence platform built for the Saudi Arabian food and hospitality market."
+  />
+  <meta name="theme-color" content="#0D472B" />
+  <style>
+    :root {
+      --bg-deep: #061A10;
+      --bg-surface: #0B2A1B;
+      --bg-card: #103523;
+      --bg-card-hover: #15422C;
+      --gold: #D4A017;
+      --gold-light: #F2CA52;
+      --gold-dim: rgba(212, 160, 23, 0.18);
+      --border-gold: rgba(212, 160, 23, 0.32);
+      --text-primary: #F7F3E8;
+      --text-secondary: #C8D6CD;
+      --text-muted: #93AB9D;
+      --emerald-bright: #1B6B43;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Noto Sans Arabic", "Geeza Pro", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(212, 160, 23, 0.12), transparent 38%),
+        radial-gradient(circle at 88% 15%, rgba(27, 107, 67, 0.32), transparent 42%),
+        linear-gradient(180deg, var(--bg-deep) 0%, #082316 50%, var(--bg-deep) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(6, 26, 16, 0.86);
+      border-bottom: 1px solid var(--border-gold);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 70px;
+      flex-wrap: wrap;
+      padding: 10px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold) 0%, #9E730C 100%);
+      color: #061A10;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.15rem;
+      box-shadow: 0 6px 18px rgba(212, 160, 23, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+    }
+
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--gold-light);
+      display: block;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.92rem;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    .lang-btn {
+      border: 1px solid var(--border-gold);
+      background: var(--gold-dim);
+      color: var(--gold-light);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .lang-btn:hover {
+      background: rgba(212, 160, 23, 0.28);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 48px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-gold);
+      background: var(--gold-dim);
+      color: var(--gold-light);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      line-height: 1.16;
+      font-weight: 850;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+    }
+
+    .hero-accent {
+      color: var(--gold-light);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      max-width: 620px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, background 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, #B88710 100%);
+      color: #061A10;
+      box-shadow: 0 10px 24px rgba(212, 160, 23, 0.25);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-gold);
+    }
+
+    .hero-panel {
+      background: linear-gradient(160deg, var(--bg-card) 0%, #092417 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .spec-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(212, 160, 23, 0.14);
+      font-size: 0.92rem;
+    }
+
+    .spec-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .spec-label {
+      color: var(--text-muted);
+    }
+
+    .spec-value {
+      color: var(--text-primary);
+      font-weight: 700;
+      text-align: end;
+    }
+
+    /* Sections */
+    section {
+      padding: 44px 0;
+    }
+
+    .section-head {
+      margin-bottom: 24px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.45rem, 2.6vw, 2rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .section-head p {
+      color: var(--text-secondary);
+      max-width: 720px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid rgba(212, 160, 23, 0.22);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--gold);
+      background: var(--bg-card-hover);
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      background: var(--gold-dim);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    /* Interactive Tabs */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border: 1px solid rgba(212, 160, 23, 0.22);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--gold);
+      color: #061A10;
+      border-color: var(--gold);
+    }
+
+    .tab-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 22px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      background: rgba(6, 26, 16, 0.75);
+      border: 1px solid rgba(212, 160, 23, 0.28);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    /* Code / Deployment Steps */
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--bg-surface);
+      border: 1px solid rgba(212, 160, 23, 0.2);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #061A10;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(242, 202, 82, 0.45);
+      background: rgba(212, 160, 23, 0.1);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    footer {
+      border-top: 1px solid rgba(212, 160, 23, 0.22);
+      padding: 28px 0 40px;
+      margin-top: 32px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">س</div>
+        <div>
+          <span class="brand-name" data-i18n="brandName">Sufra AI</span>
+          <span class="brand-sub" data-i18n="brandSub">Saudi Food AI Social Media Manager</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <nav class="nav-links" aria-label="Primary Navigation">
+          <a href="#modules" data-i18n="navModules">Modules</a>
+          <a href="#coverage" data-i18n="navCoverage">Saudi Market</a>
+          <a href="#github-deploy" data-i18n="navDeploy">GitHub Setup</a>
+        </nav>
+        <button id="langToggle" class="lang-btn" type="button" aria-label="Switch Language">
+          العربية
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="pill" data-i18n="heroPill">Android Jetpack Compose · Firebase AI Logic · Places API</span>
+          <h1 data-i18n-html="heroTitle">
+            AI Marketing &amp; <span class="hero-accent">Review Intelligence</span> for Saudi Restaurants
+          </h1>
+          <p class="hero-desc" data-i18n="heroDesc">
+            Built for Saudi food &amp; hospitality brands: generate localized Arabic &amp; English campaigns,
+            analyze real Google Maps restaurant reviews with Gemini AI, research market trends with
+            Google Search &amp; Maps Grounding, and collaborate with a live voice copilot.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#modules" data-i18n="ctaExplore">Explore App Modules</a>
+            <a class="btn btn-secondary" href="#github-deploy" data-i18n="ctaDeploy">GitHub Pages &amp; CI Guide</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Technical Overview">
+          <div class="panel-title" data-i18n="specTitle">Application Architecture</div>
+          <ul class="spec-list">
+            <li class="spec-item">
+              <span class="spec-label" data-i18n="specAppIdLabel">Package ID</span>
+              <span class="spec-value">com.aistudio.saudifood.mkzt</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-label" data-i18n="specUiLabel">Android UI</span>
+              <span class="spec-value">Kotlin · Material 3 Compose</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-label" data-i18n="specAiLabel">Cloud AI SDK</span>
+              <span class="spec-value">Firebase AI Logic (App Check)</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-label" data-i18n="specMapsLabel">Location &amp; Places</span>
+              <span class="spec-value">Places API (New) + Maps Grounding</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-label" data-i18n="specCiLabel">GitHub CI</span>
+              <span class="spec-value">Gradle 9.3.1 · Unit &amp; Debug APK</span>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="modules">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="modulesTitle">Implemented Android Modules</h2>
+          <p data-i18n="modulesSub">
+            All core screens built inside the Sufra AI Android application.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <span class="card-tag">Maps &amp; Reviews</span>
+            <h3 data-i18n="modMapsTitle">Google Maps &amp; AI Review Intelligence</h3>
+            <p data-i18n="modMapsDesc">
+              Search restaurants across 8 Saudi cities, inspect ratings, hours, phone, and up to 5 returned
+              Places API reviews, run sentiment &amp; competitor reports, and send insights to Content Studio.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">AI Studio</span>
+            <h3 data-i18n="modStudioTitle">Localized Saudi Content &amp; Image Studio</h3>
+            <p data-i18n="modStudioDesc">
+              Generate structured Arabic &amp; English captions, hashtags, short-video concepts, food photography
+              prompts, AI dish visuals, and voice-to-brief microphone transcription.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">Copilot</span>
+            <h3 data-i18n="modCopilotTitle">Gemini Chatbot &amp; Live Voice</h3>
+            <p data-i18n="modCopilotDesc">
+              Multi-turn restaurant marketing assistant with selectable Gemini model tiers, role presets,
+              Google Search &amp; Maps grounding toggles, and real-time Gemini Live audio sessions.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">Research</span>
+            <h3 data-i18n="modResearchTitle">Saudi Food Market Research</h3>
+            <p data-i18n="modResearchDesc">
+              Explore Saudi dining trends and seasonal culinary demand backed by live Google Search
+              grounding citations and attributed sources.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">Channels &amp; Schedule</span>
+            <h3 data-i18n="modChannelsTitle">5 Owner Social Channels &amp; Calendar</h3>
+            <p data-i18n="modChannelsDesc">
+              Dedicated single-owner channel management for Facebook, Instagram, Snapchat, X, and TikTok
+              paired with post scheduling and audit-ready connection status reporting.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">Campaigns &amp; Dashboard</span>
+            <h3 data-i18n="modCampaignsTitle">Campaigns, WhatsApp &amp; Command Dashboard</h3>
+            <p data-i18n="modCampaignsDesc">
+              Manage Saudi dining campaigns, WhatsApp business links, and command center metrics with clear
+              separation between live integrations and labeled sample data.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="coverage">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="coverageTitle">Saudi Arabia Coverage Explorer</h2>
+          <p data-i18n="coverageSub">
+            Switch between supported Saudi cities, food categories, and Gemini AI capabilities.
+          </p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Coverage Categories">
+          <button class="tab-btn active" type="button" data-tab="cities" data-i18n="tabCities">Saudi Cities (8)</button>
+          <button class="tab-btn" type="button" data-tab="categories" data-i18n="tabCategories">Food Categories (10)</button>
+          <button class="tab-btn" type="button" data-tab="sentiment" data-i18n="tabSentiment">Review Themes</button>
+        </div>
+
+        <div id="tabPanel" class="tab-panel" role="tabpanel">
+          <h3 id="tabHeading">Supported Saudi Cities</h3>
+          <p id="tabDescription">
+            Location-aware text search, nearby discovery, and Google Maps Grounding across major KSA dining hubs:
+          </p>
+          <div id="tabChips" class="chip-row">
+            <span class="chip">Jeddah · جدة</span>
+            <span class="chip">Riyadh · الرياض</span>
+            <span class="chip">Makkah · مكة</span>
+            <span class="chip">Madinah · المدينة</span>
+            <span class="chip">Dammam · الدمام</span>
+            <span class="chip">Khobar · الخبر</span>
+            <span class="chip">Taif · الطائف</span>
+            <span class="chip">Abha · أبها</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="github-deploy">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="deployTitle">Deploying on GitHub &amp; GitHub Pages</h2>
+          <p data-i18n="deploySub">
+            How this repository is organized for both GitHub Pages hosting and automated Android CI builds.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3 data-i18n="step1Title">Push Repository from AI Studio</h3>
+              <p data-i18n="step1Desc">
+                Use Settings → Push to GitHub in AI Studio. Sensitive files (.env, release keystores,
+                and compiled APKs/AABs) are excluded automatically via .gitignore.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3 data-i18n="step2Title">Enable GitHub Pages for This Landing Page</h3>
+              <p data-i18n="step2Desc">
+                In your GitHub repository, open Settings → Pages → Source: Deploy from a branch → Select
+                branch main and folder / (root). GitHub Pages will publish this index.html automatically.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h3 data-i18n="step3Title">Automated Android CI Workflow</h3>
+              <p data-i18n="step3Desc">
+                Every push to main/master triggers .github/workflows/android-ci.yml to run Robolectric unit
+                tests and assemble a debug APK artifact without exposing private API keys.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice" data-i18n="securityNotice">
+          <strong>Security Reminder:</strong> Never commit <code>.env</code>, upload keystores (<code>*.jks</code>),
+          or live API keys into GitHub or public APK releases. Configure <code>GOOGLE_MAPS_API_KEY</code> in the
+          AI Studio Secrets panel or private GitHub Repository Secrets for authorized builds only.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Sufra AI · Saudi Food AI Social Media Manager</span>
+      <span data-i18n="footerNote">Static GitHub Pages showcase · Built for Android Jetpack Compose</span>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        brandName: "Sufra AI",
+        brandSub: "Saudi Food AI Social Media Manager",
+        navModules: "Modules",
+        navCoverage: "Saudi Market",
+        navDeploy: "GitHub Setup",
+        heroPill: "Android Jetpack Compose · Firebase AI Logic · Places API",
+        heroTitle: 'AI Marketing &amp; <span class="hero-accent">Review Intelligence</span> for Saudi Restaurants',
+        heroDesc:
+          "Built for Saudi food & hospitality brands: generate localized Arabic & English campaigns, analyze real Google Maps restaurant reviews with Gemini AI, research market trends with Google Search & Maps Grounding, and collaborate with a live voice copilot.",
+        ctaExplore: "Explore App Modules",
+        ctaDeploy: "GitHub Pages & CI Guide",
+        specTitle: "Application Architecture",
+        specAppIdLabel: "Package ID",
+        specUiLabel: "Android UI",
+        specAiLabel: "Cloud AI SDK",
+        specMapsLabel: "Location & Places",
+        specCiLabel: "GitHub CI",
+        modulesTitle: "Implemented Android Modules",
+        modulesSub: "All core screens built inside the Sufra AI Android application.",
+        modMapsTitle: "Google Maps & AI Review Intelligence",
+        modMapsDesc:
+          "Search restaurants across 8 Saudi cities, inspect ratings, hours, phone, and up to 5 returned Places API reviews, run sentiment & competitor reports, and send insights to Content Studio.",
+        modStudioTitle: "Localized Saudi Content & Image Studio",
+        modStudioDesc:
+          "Generate structured Arabic & English captions, hashtags, short-video concepts, food photography prompts, AI dish visuals, and voice-to-brief microphone transcription.",
+        modCopilotTitle: "Gemini Chatbot & Live Voice",
+        modCopilotDesc:
+          "Multi-turn restaurant marketing assistant with selectable Gemini model tiers, role presets, Google Search & Maps grounding toggles, and real-time Gemini Live audio sessions.",
+        modResearchTitle: "Saudi Food Market Research",
+        modResearchDesc:
+          "Explore Saudi dining trends and seasonal culinary demand backed by live Google Search grounding citations and attributed sources.",
+        modChannelsTitle: "5 Owner Social Channels & Calendar",
+        modChannelsDesc:
+          "Dedicated single-owner channel management for Facebook, Instagram, Snapchat, X, and TikTok paired with post scheduling and audit-ready connection status reporting.",
+        modCampaignsTitle: "Campaigns, WhatsApp & Command Dashboard",
+        modCampaignsDesc:
+          "Manage Saudi dining campaigns, WhatsApp business links, and command center metrics with clear separation between live integrations and labeled sample data.",
+        coverageTitle: "Saudi Arabia Coverage Explorer",
+        coverageSub: "Switch between supported Saudi cities, food categories, and Gemini AI capabilities.",
+        tabCities: "Saudi Cities (8)",
+        tabCategories: "Food Categories (10)",
+        tabSentiment: "Review Themes",
+        deployTitle: "Deploying on GitHub & GitHub Pages",
+        deploySub: "How this repository is organized for both GitHub Pages hosting and automated Android CI builds.",
+        step1Title: "Push Repository from AI Studio",
+        step1Desc:
+          "Use Settings → Push to GitHub in AI Studio. Sensitive files (.env, release keystores, and compiled APKs/AABs) are excluded automatically via .gitignore.",
+        step2Title: "Enable GitHub Pages for This Landing Page",
+        step2Desc:
+          "In your GitHub repository, open Settings → Pages → Source: Deploy from a branch → Select branch main and folder / (root). GitHub Pages will publish this index.html automatically.",
+        step3Title: "Automated Android CI Workflow",
+        step3Desc:
+          "Every push to main/master triggers .github/workflows/android-ci.yml to run Robolectric unit tests and assemble a debug APK artifact without exposing private API keys.",
+        securityNotice:
+          "<strong>Security Reminder:</strong> Never commit <code>.env</code>, upload keystores (<code>*.jks</code>), or live API keys into GitHub or public APK releases. Configure <code>GOOGLE_MAPS_API_KEY</code> in the AI Studio Secrets panel or private GitHub Repository Secrets for authorized builds only.",
+        footerNote: "Static GitHub Pages showcase · Built for Android Jetpack Compose"
+      },
+      ar: {
+        brandName: "سُفرة AI",
+        brandSub: "مدير التسويق الذكي لمطاعم السعودية",
+        navModules: "الوحدات",
+        navCoverage: "السوق السعودي",
+        navDeploy: "النشر على GitHub",
+        heroPill: "أندرويد Jetpack Compose · Firebase AI Logic · خرائط قوقل",
+        heroTitle: 'تسويق ذكي و<span class="hero-accent">تحليل تقييمات</span> لمطاعم السعودية',
+        heroDesc:
+          "مصمم للعلامات التجارية في قطاع الأغذية والضيافة بالسعودية: توليد حملات عربية وإنجليزية محلية، تحليل مراجعات خرائط قوقل الفعلية بذكاء Gemini، بحث اتجاهات السوق عبر Search وMaps Grounding، ومساعد صوتي مباشر.",
+        ctaExplore: "استكشف وحدات التطبيق",
+        ctaDeploy: "دليل GitHub Pages و CI",
+        specTitle: "بنية التطبيق التقنية",
+        specAppIdLabel: "معرّف الحزمة",
+        specUiLabel: "واجهة أندرويد",
+        specAiLabel: "حزمة الذكاء السحابية",
+        specMapsLabel: "الخرائط والأماكن",
+        specCiLabel: "تكامل GitHub CI",
+        modulesTitle: "الوحدات المنفذة في التطبيق",
+        modulesSub: "جميع الشاشات الأساسية المبنية داخل تطبيق سُفرة AI لنظام أندرويد.",
+        modMapsTitle: "خرائط قوقل وتحليل التقييمات بالذكاء الاصطناعي",
+        modMapsDesc:
+          "ابحث في 8 مدن سعودية، واعرض التقييمات وساعات العمل والهاتف وحتى 5 مراجعات عائدة من Places API، وأنشئ تقارير المنافسين، وحوّل النتائج إلى استوديو المحتوى.",
+        modStudioTitle: "استوديو المحتوى السعودي والصور بالذكاء الاصطناعي",
+        modStudioDesc:
+          "أنشئ نصوصاً عربية وإنجليزية، ووسوماً، وأفكار فيديو قصير، ووصف تصوير أطباق، وصوراً مولدة بالذكاء الاصطناعي، مع تفريغ صوتي من الميكروفون.",
+        modCopilotTitle: "مساعد Gemini والمحادثة الصوتية المباشرة",
+        modCopilotDesc:
+          "مساعد تسويقي متعدد الجولات مع اختيار فئة نموذج Gemini، وأدوار مخصصة، وتفعيل بحث قوقل والخرائط، وجلسات صوتية حية عبر Gemini Live.",
+        modResearchTitle: "أبحاث سوق الطعام السعودي",
+        modResearchDesc:
+          "استكشف اتجاهات الضيافة السعودية والطلب الموسمي مدعوماً بمصادر ونتائج Google Search Grounding الحية.",
+        modChannelsTitle: "إدارة 5 قنوات تواصل وجدولة المحتوى",
+        modChannelsDesc:
+          "إدارة قنوات المالك الخاصة لفيسبوك وإنستغرام وسناب شات وإكس وتيك توك مع تقويم الجدولة وعرض حالة الربط الفعلية.",
+        modCampaignsTitle: "الحملات وواتساب ولوحة القيادة",
+        modCampaignsDesc:
+          "إدارة حملات المطاعم وروابط واتساب للأعمال ولوحة المؤشرات مع فصل واضح بين التكاملات الحية والبيانات التجريبية المعلّمة.",
+        coverageTitle: "مستكشف التغطية في السعودية",
+        coverageSub: "تبديل سريع بين المدن السعودية وفئات المطاعم ومعايير تحليل المراجعات.",
+        tabCities: "المدن السعودية (8)",
+        tabCategories: "فئات الطعام (10)",
+        tabSentiment: "محاور التحليل",
+        deployTitle: "النشر عبر GitHub و GitHub Pages",
+        deploySub: "طريقة تجهيز هذا المستودع لاستضافة الصفحة التعريفية وتشغيل بناء أندرويد الآلي.",
+        step1Title: "رفع المستودع من AI Studio",
+        step1Desc:
+          "من قائمة Settings ← Push to GitHub في AI Studio. يتم استبعاد الملفات الحساسة (.env ومفاتيح التوقيع وملفات APK/AAB) تلقائياً عبر .gitignore.",
+        step2Title: "تفعيل GitHub Pages لصفحة index.html",
+        step2Desc:
+          "في إعدادات المستودع على GitHub افتح Settings ← Pages ثم اختر Deploy from a branch وحدد الفرع main والمجلد / (root).",
+        step3Title: "بناء أندرويد الآلي عبر GitHub Actions",
+        step3Desc:
+          "كل دفع إلى main أو master يشغّل ملف android-ci.yml لتشغيل اختبارات Robolectric وبناء حزمة Debug APK بدون كشف المفاتيح الخاصة.",
+        securityNotice:
+          "<strong>تنبيه أمني:</strong> لا تقم أبداً برفع ملف <code>.env</code> أو مفاتيح التوقيع (<code>*.jks</code>) أو مفاتيح API الفعلية إلى GitHub أو ملفات APK عامة.",
+        footerNote: "صفحة عرض ثابتة لـ GitHub Pages · مبنية لتطبيق أندرويد Jetpack Compose"
+      }
+    };
+
+    const tabContent = {
+      en: {
+        cities: {
+          heading: "Supported Saudi Cities",
+          desc: "Location-aware text search, nearby discovery, and Google Maps Grounding across major KSA dining hubs:",
+          chips: [
+            "Jeddah · جدة", "Riyadh · الرياض", "Makkah · مكة", "Madinah · المدينة",
+            "Dammam · الدمام", "Khobar · الخبر", "Taif · الطائف", "Abha · أبها"
+          ]
+        },
+        categories: {
+          heading: "Supported Food Categories",
+          desc: "Filter restaurant intelligence and localized Saudi campaign prompts by dining category:",
+          chips: [
+            "Saudi Restaurants", "Arabic Restaurants", "Fast Food", "Cafes", "Bakeries",
+            "Seafood", "Desserts", "Pizza", "Burgers", "Healthy Food"
+          ]
+        },
+        sentiment: {
+          heading: "AI Review Classification Themes",
+          desc: "Reviews returned by Google Places API (up to 5 available reviews per place) are analyzed with Gemini AI while keeping direct quotes separate from AI interpretations:",
+          chips: [
+            "Positive: Food Quality & Taste", "Positive: Service & Hospitality",
+            "Positive: Cleanliness & Atmosphere", "Positive: Value for Money",
+            "Negative: Waiting Times & Delivery", "Negative: Pricing & Service",
+            "Neutral: Mixed Opinions & Suggestions"
+          ]
+        }
+      },
+      ar: {
+        cities: {
+          heading: "المدن السعودية المدعومة",
+          desc: "بحث جغرافي وبحث عن الأماكن القريبة وربط خرائط قوقل في أبرز مدن الضيافة بالمملكة:",
+          chips: [
+            "جدة · Jeddah", "الرياض · Riyadh", "مكة · Makkah", "المدينة · Madinah",
+            "الدمام · Dammam", "الخبر · Khobar", "الطائف · Taif", "أبها · Abha"
+          ]
+        },
+        categories: {
+          heading: "فئات الطعام والمطاعم",
+          desc: "تصفية تحليلات المطاعم وتوليد المحتوى التسويقي حسب نوع المطعم:",
+          chips: [
+            "مطاعم سعودية", "مطاعم عربية", "وجبات سريعة", "مقاهي", "مخابز",
+            "مأكولات بحرية", "حلويات", "بيتزا", "برجر", "طعام صحي"
+          ]
+        },
+        sentiment: {
+          heading: "محاور تحليل التقييمات بالذكاء الاصطناعي",
+          desc: "يتم تحليل المراجعات المتاحة من Places API (حتى 5 مراجعات لكل مكان) مع الفصل التام بين الاقتباسات الحقيقية وتفسير الذكاء الاصطناعي:",
+          chips: [
+            "إيجابي: جودة الطعام والمذاق", "إيجابي: خدمة العملاء والضيافة",
+            "إيجابي: النظافة والأجواء", "إيجابي: القيمة مقابل السعر",
+            "سلبي: أوقات الانتظار والتوصيل", "سلبي: الأسعار وملاحظات الخدمة",
+            "محايد: آراء مختلطة واقتراحات"
+          ]
+        }
+      }
+    };
+
+    let currentLang = "en";
+    let currentTab = "cities";
+
+    function renderTab() {
+      const data = tabContent[currentLang][currentTab];
+      document.getElementById("tabHeading").textContent = data.heading;
+      document.getElementById("tabDescription").textContent = data.desc;
+      const chipContainer = document.getElementById("tabChips");
+      chipContainer.innerHTML = "";
+      data.chips.forEach((label) => {
+        const span = document.createElement("span");
+        span.className = "chip";
+        span.textContent = label;
+        chipContainer.appendChild(span);
+      });
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      const dict = translations[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.getElementById("langToggle").textContent = lang === "ar" ? "English" : "العربية";
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) {
+          if (key === "securityNotice") {
+            el.innerHTML = dict[key];
+          } else {
+            el.textContent = dict[key];
+          }
+        }
+      });
+
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-html");
+        if (dict[key]) {
+          el.innerHTML = dict[key];
+        }
+      });
+
+      renderTab();
+    }
+
+    document.getElementById("langToggle").addEventListener("click", () => {
+      applyLanguage(currentLang === "en" ? "ar" : "en");
+    });
+
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTab = btn.getAttribute("data-tab");
+        renderTab();
+      });
+    });
+  </script>
+</body>
+</html>

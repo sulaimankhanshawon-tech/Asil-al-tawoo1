@@ -1,0 +1,6 @@
+{
+  "name": "Sufra AI",
+  "description": "AI-Powered Social Media Marketing Manager for the Saudi Arabian Food Market",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
